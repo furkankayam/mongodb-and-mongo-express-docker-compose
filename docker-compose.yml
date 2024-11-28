@@ -1,0 +1,43 @@
+# Services
+services:
+
+  # MongoDb
+  mongodb:
+    image: mongo:4.4.17-focal
+    container_name: mongodb
+    restart: always
+    env_file: ./.env
+    ports:
+      - "${MONGODB_PORT}:${MONGODB_PORT}"
+    volumes:
+      - db:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}
+    networks:
+      - my-network
+
+  # Mongo Express
+  mongo-express:
+    image: mongo-express:0.54.0
+    container_name: mongo-express
+    restart: always
+    env_file: ./.env
+    ports:
+      - 5000:8081
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGODB_USER}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGODB_PASSWORD}
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+    networks:
+      - my-network
+
+
+# Volumes
+volumes:
+  db:
+
+# Networks
+networks:
+  my-network:
+    driver: bridge
