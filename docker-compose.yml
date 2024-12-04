@@ -11,6 +11,7 @@ services:
       - "${MONGODB_PORT}:${MONGODB_PORT}"
     volumes:
       - db:/data/db
+      - ./init.js:/docker-entrypoint-initdb.d/init.js:ro
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USER}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}
@@ -31,7 +32,6 @@ services:
       - ME_CONFIG_MONGODB_SERVER=mongodb
     networks:
       - my-network
-
 
 # Volumes
 volumes:
